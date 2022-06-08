@@ -42,3 +42,12 @@ class Snake():
             return True
 
         return False
+    
+    def can_move(self, new_direction: Directions):
+        if ((self.direction == Directions.UP and new_direction == Directions.DOWN) or
+            (self.direction == Directions.RIGHT and new_direction == Directions.LEFT) or
+            (self.direction == Directions.DOWN and new_direction == Directions.UP) or
+            (self.direction == Directions.LEFT and new_direction == Directions.RIGHT)):
+            return False
+        else:
+            return True
