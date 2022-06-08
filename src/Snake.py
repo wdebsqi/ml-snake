@@ -6,7 +6,8 @@ from pygame import Color
 
 
 class Snake():
-    def __init__(self, starting_point: Point = Point(MIDDLE_X, MIDDLE_Y), color1: Color = GREEN, color2: Color = GREEN2):
+    def __init__(self, starting_point: Point = Point(MIDDLE_X, MIDDLE_Y), color1: Color = GREEN, color2: Color = GREEN2) -> None:
+
         self.head = starting_point
         self.body = [
             starting_point, 
@@ -17,7 +18,8 @@ class Snake():
         self.color2 = color2
         self.direction = Directions.RIGHT
 
-    def move(self, direction: Directions):
+    def move(self, direction: Directions) -> None:
+
         x = self.head.x
         y = self.head.y
 
@@ -33,7 +35,8 @@ class Snake():
         #self.body.pop()    
         self.head = Point(x, y)
 
-    def _is_collision(self):
+    def _is_collision(self) -> bool:
+
         #Hitting wall
         if (self.head.x > (width - POINT_SIZE)) or (self.head.x < 0) or (self.head.y > (height - POINT_SIZE)) or (self.head.y < 0):
             return True
@@ -43,7 +46,8 @@ class Snake():
 
         return False
     
-    def can_move(self, new_direction: Directions):
+    def can_move(self, new_direction: Directions) -> bool:
+        
         if ((self.direction == Directions.UP and new_direction == Directions.DOWN) or
             (self.direction == Directions.RIGHT and new_direction == Directions.LEFT) or
             (self.direction == Directions.DOWN and new_direction == Directions.UP) or
