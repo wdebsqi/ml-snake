@@ -38,7 +38,7 @@ class Snake():
         if (self.head.x > (width - POINT_SIZE)) or (self.head.x < 0) or (self.head.y > (height - POINT_SIZE)) or (self.head.y < 0):
             return True
         #Hitting self
-        if (self.head.x in self.body[1:]):
+        if (self.head in self.body[1:]):
             return True
 
         return False
