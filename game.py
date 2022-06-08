@@ -1,42 +1,25 @@
 import pygame, sys
-from enum import Enum
 from pygame import draw, Color, Rect
+from PIL import Image
+from src.config import *
+from src.Directions import *
+from src.Point import *
+from src.Snake import *
+from src.Food import *
 
-SIZE = width, height = 640, 480
-POINT_SIZE = 20
-MIDDLE_X, MIDDLE_Y = int(width / 2) - POINT_SIZE, int(height / 2) - POINT_SIZE
-
-WHITE = 255, 255, 255
-BLACK = 0, 0, 0
-RED = 255, 0, 0
-FPS = 10
-
+#Game configuration
 pygame.init()
-screen = pygame.display.set_mode(SIZE)
+pygame.display.set_caption('Snake')
+screen = pygame.display.set_mode(WINDOW_SIZE)
 clock = pygame.time.Clock()
 
-class Directions(Enum):
-    UP = "up"
-    RIGHT = "right"
-    DOWN = "down"
-    LEFT = "left"
+#Load images
+papaj = pygame.image.load('src/images/papaj.jpg')
+papaj = pygame.transform.scale(papaj, (POINT_SIZE, POINT_SIZE))
 
+kremowka = pygame.image.load('src/images/kremowka.png')
+kremowka = pygame.transform.scale(kremowka, (POINT_SIZE, POINT_SIZE))
 
-class Point():
-    def __init__(self, x: int, y: int):
-        self.x = x
-        self.y = y
-
-class Food():
-    def __init__(self, position: Point = Point(MIDDLE_X + 3 * POINT_SIZE, MIDDLE_Y + 3 * POINT_SIZE), color: Color = RED):
-        self.position = position
-        self.color = color
-
-class Snake():
-    def __init__(self, starting_point: Point = Point(MIDDLE_X, MIDDLE_Y), color: Color = WHITE):
-        self.body = [starting_point]
-        self.color = color
-        self.direction = Directions.RIGHT
 
 def move_snake(snake: Snake, direction: Directions) -> None:
     current_head = snake.body.pop()
@@ -62,11 +45,13 @@ while continue_game:
     
     screen.fill(BLACK)
 
+    #screen.blit(kremowka, (food.position.x, food.position.y, POINT_SIZE, POINT_SIZE))
     draw.rect(screen, food.color, (food.position.x, food.position.y, POINT_SIZE, POINT_SIZE))
 
     move_snake(snake, snake.direction)
 
     for point in snake.body:
+        #screen.blit(papaj, (point.x, point.y, POINT_SIZE, POINT_SIZE))
         draw.rect(screen, snake.color, (point.x, point.y, POINT_SIZE, POINT_SIZE))
 
     pygame.display.flip()
