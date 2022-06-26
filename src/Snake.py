@@ -1,9 +1,9 @@
-from src.Point import *
-from src.config import *
-from src.Directions import *
-from src.Game import *
+from Point import *
+from config import *
+from Directions import *
+from Game import *
 from pygame import Color
-
+import numpy as np
 
 class Snake():
     def __init__(self, starting_point: Point = Point(MIDDLE_X, MIDDLE_Y), color1: Color = GREEN, color2: Color = GREEN2) -> None:
@@ -18,40 +18,48 @@ class Snake():
         self.color2 = color2
         self.direction = Directions.RIGHT
 
-    def move(self, direction: Directions) -> None:
+    def move(self, action: list) -> None:
+
+        # [straight, right, left]
+
+        clock_wise = [Directions.RIGHT, Directions.DOWN, Directions.LEFT, Directions.UP]
+        idx = clock_wise.index(self.direction)
+
+        if np.array_equal(action, [1, 0, 0]):
+            new_direction = clock_wise[idx]
+        elif np.array_equal(action, [0, 1, 0]):
+            next_idx = (idx + 1) % 4
+            new_direction = clock_wise[next_idx]
+        else:
+            next_idx = (idx - 1) % 4
+            new_direction = clock_wise[next_idx]
+
+        self.direction = new_direction
 
         x = self.head.x
         y = self.head.y
 
-        if direction == Directions.RIGHT:
+        if self.direction == Directions.RIGHT:
             x += POINT_SIZE
-        elif direction == Directions.LEFT:
+        elif self.direction == Directions.LEFT:
             x -= POINT_SIZE
-        elif direction == Directions.DOWN:
+        elif self.direction == Directions.DOWN:
             y += POINT_SIZE
-        elif direction == Directions.UP:
+        elif self.direction == Directions.UP:
             y -= POINT_SIZE
 
-        #self.body.pop()    
+        # self.body.pop()    
         self.head = Point(x, y)
 
-    def _is_collision(self) -> bool:
+    def is_collision(self, pt=None) -> bool:
+        if pt is None:
+            pt = self.head
 
         #Hitting wall
-        if (self.head.x > (width - POINT_SIZE)) or (self.head.x < 0) or (self.head.y > (height - POINT_SIZE)) or (self.head.y < 0):
+        if (pt.x > (width - POINT_SIZE)) or (pt.x < 0) or (pt.y > (height - POINT_SIZE)) or (pt.y < 0):
             return True
         #Hitting self
-        if (self.head in self.body[1:]):
+        if (pt in self.body[1:]):
             return True
 
         return False
-    
-    def can_move(self, new_direction: Directions) -> bool:
-        
-        if ((self.direction == Directions.UP and new_direction == Directions.DOWN) or
-            (self.direction == Directions.RIGHT and new_direction == Directions.LEFT) or
-            (self.direction == Directions.DOWN and new_direction == Directions.UP) or
-            (self.direction == Directions.LEFT and new_direction == Directions.RIGHT)):
-            return False
-        else:
-            return True

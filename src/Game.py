@@ -1,11 +1,11 @@
 import random
 import pygame, sys
 from pygame import draw
-from src.config import *
-from src.Directions import *
-from src.Point import *
-from src.Snake import *
-from src.Food import *
+from config import *
+from Directions import *
+from Point import *
+from Snake import *
+from Food import *
 
 class Game():
     def __init__(self) -> None:
@@ -15,8 +15,9 @@ class Game():
         pygame.display.set_caption(WINDOW_NAME)
         self.screen = pygame.display.set_mode(WINDOW_SIZE)
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font('src/fonts/arial.ttf', 25)
+        self.font = pygame.font.Font('fonts/arial.ttf', 25)
         self.game_over = False
+        self.food = None
         self.reset()
 
 
@@ -72,8 +73,9 @@ class Game():
 
         # 3. Check if snake died
         reward = 0
+        self.game_over = False
 
-        if self.snake._is_collision() or self.frame_iteration > 100*len(self.snake.body):
+        if self.snake.is_collision() or self.frame_iteration > 100*len(self.snake.body):
             reward = -10
             self.game_over = True
             return reward, self.game_over, self.score

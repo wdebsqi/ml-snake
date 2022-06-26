@@ -11,5 +11,3 @@ if __name__ == '__main__':
 
         if game.game_over == True:
             break
-
-    print(f'Final Score:{game_score}')
