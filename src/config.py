@@ -14,4 +14,4 @@ SMALL_POINT_OFFSET = 4
 WINDOW_SIZE = width, height = 1280, 720
 WINDOW_NAME = "AI Snake"
 MIDDLE_X, MIDDLE_Y = int(width / 2) - POINT_SIZE, int(height / 2) - POINT_SIZE
-FPS = 20
+FPS = 40
